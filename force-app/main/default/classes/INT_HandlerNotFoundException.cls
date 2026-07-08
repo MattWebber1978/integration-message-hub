@@ -1,0 +1,1 @@
+public class INT_HandlerNotFoundException extends INT_FrameworkException {}
