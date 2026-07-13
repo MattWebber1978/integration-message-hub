@@ -1,17 +1,14 @@
 public class INT_Dispatcher {
-    private static final Map<String, Type> HANDLER_REGISTRY = new Map<String, Type>{
-        'UserAccountRegistration' => INT_UserAccountRegistrationHandler.class,
-        'IdentityVerification'    => INT_IdentityVerificationHandler.class,
-        'BacsPayment'             => INT_BacsPaymentHandler.class
-    };
-
+    
     public static void dispatch(INT_BaseInboundPayload payload) {
         payload.validate();
 
-        Type handlerType = HANDLER_REGISTRY.get(payload.messageType);
+        Integration_Config__mdt config = INT_ConfigProvider.getConfig(payload.messageType);
+
+        Type handlerType = Type.forName(config.ProcessorClassTxt__c);
 
         if(handlerType == null) {
-            throw new INT_HandlerNotFoundException('No handler registered for messageType: ' +  payload.messageType);
+            throw new INT_HandlerNotFoundException('Processor class not found: ' +  config.ProcessorClassTxt__c);
         }
 
         INT_IHandler handler = (INT_IHandler) handlerType.newInstance();

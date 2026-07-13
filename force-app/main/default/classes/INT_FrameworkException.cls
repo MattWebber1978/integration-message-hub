@@ -1,6 +1,6 @@
 public class INT_FrameworkException extends Exception {
 
-        public enum ErrorCode {
+    public enum ErrorCode {
         VALIDATION_ERROR,
         HANDLER_NOT_FOUND,
         PARSING_ERROR,
